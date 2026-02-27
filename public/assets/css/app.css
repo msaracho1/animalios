@@ -146,37 +146,28 @@ input:focus,select:focus,textarea:focus{border-color:#9b948a; box-shadow:0 0 0 3
 .center{display:flex; align-items:center; justify-content:center}
 
 /* Home */
-.hero{
+.home-carousel{
   border-radius:16px;
   overflow:hidden;
   border:1px solid rgba(0,0,0,.08);
   box-shadow:0 16px 35px rgba(0,0,0,.12);
-  background:linear-gradient(135deg,#ff7aa7,#ff4b86);
-  color:#fff;
 }
-.hero__inner{display:grid; grid-template-columns:1.1fr .9fr; gap:18px; padding:26px}
-.hero__title{font-size:38px; font-weight:900; margin:0; letter-spacing:.02em}
-.hero__title small{display:block; font-size:14px; font-weight:800; letter-spacing:.12em; opacity:.9; margin-bottom:10px}
-.hero__subtitle{margin:10px 0 18px; max-width:520px; color:rgba(255,255,255,.92)}
-.hero__promo{display:flex; gap:10px; flex-wrap:wrap}
-.pill{background:rgba(0,0,0,.28); padding:8px 10px; border-radius:999px; font-weight:800; font-size:12px}
-.hero__mock{
-  background:rgba(255,255,255,.15);
-  border:1px dashed rgba(255,255,255,.35);
-  border-radius:16px;
-  padding:16px;
-  display:grid;
-  place-items:center;
-  min-height:220px;
+.home-carousel .carousel-item img{height:360px; object-fit:cover}
+.home-carousel .carousel-control-prev,
+.home-carousel .carousel-control-next{width:8%}
+.home-carousel .carousel-control-prev-icon,
+.home-carousel .carousel-control-next-icon{
+  background-color:rgba(0,0,0,.4);
+  border-radius:999px;
+  background-size:60% 60%;
 }
-.hero__mock span{font-weight:800; opacity:.95; text-align:center}
 
 .section-title{font-size:16px; font-weight:900; text-align:center; margin:22px 0 14px}
 
 .grid{display:grid; gap:18px}
 .grid--products{grid-template-columns:repeat(4,1fr)}
 @media (max-width:1100px){.grid--products{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:760px){.hero__inner{grid-template-columns:1fr} .grid--products{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){.home-carousel .carousel-item img{height:240px} .grid--products{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.grid--products{grid-template-columns:1fr}}
 
 .product{
