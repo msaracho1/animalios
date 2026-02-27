@@ -4,33 +4,35 @@
 $title = 'Animalios';
 
 $pawSvg = '<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 30c-4 0-8-5-8-10s3-9 7-9 7 4 7 9-2 10-6 10Zm24 0c-4 0-8-5-8-10s3-9 7-9 7 4 7 9-2 10-6 10ZM14 40c-4 0-7-4-7-8s2-7 6-7 6 3 6 7-1 8-5 8Zm36 0c-4 0-7-4-7-8s2-7 6-7 6 3 6 7-1 8-5 8Zm-18 2c8 0 18 6 18 14 0 5-4 8-18 8S14 61 14 56c0-8 10-14 18-14Z" fill="currentColor" opacity=".45"/></svg>';
-$carouselImages = glob(__DIR__ . '/../../../public/img/*.{jpg,jpeg,png,webp,gif,avif}', GLOB_BRACE) ?: [];
 
 ob_start();
 ?>
 
-<?php if (!empty($carouselImages)): ?>
-<section class="home-carousel" aria-label="Promociones">
-  <div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false">
-    <div class="carousel-inner">
-      <?php foreach ($carouselImages as $index => $imagePath): ?>
-        <?php $fileName = basename((string)$imagePath); ?>
-        <div class="carousel-item<?= $index === 0 ? ' active' : '' ?>">
-          <img src="<?= htmlspecialchars(base_path() . '/img/' . $fileName, ENT_QUOTES, 'UTF-8') ?>" class="d-block w-100" alt="Promoción Animalios <?= (int)$index + 1 ?>" loading="lazy">
-        </div>
-      <?php endforeach; ?>
+<section class="hero" aria-label="Promociones">
+  <div class="hero__inner">
+    <div>
+      <h1 class="hero__title">
+        <small>NATURAL</small>
+        BLACK SALE
+      </h1>
+      <p class="hero__subtitle">Descuentos en alimento y piedras sanitarias. Encontrá tu marca y aprovechá promos por tiempo limitado.</p>
+
+      <div class="hero__promo" aria-label="badges">
+        <span class="pill">HASTA 45% OFF</span>
+        <span class="pill">3×2</span>
+        <span class="pill">KILOS GRATIS</span>
+      </div>
+
+      <div style="margin-top:16px;">
+        <a class="btn btn--primary" href="/animalios/public/tienda">COMPRAR</a>
+      </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+
+    <div class="hero__mock" aria-hidden="true">
+      <span>Promo visual / carrusel<br> (placeholder)</span>
+    </div>
   </div>
 </section>
-<?php endif; ?>
 
 <h2 class="section-title">Productos más vendidos</h2>
 
