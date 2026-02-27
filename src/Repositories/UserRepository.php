@@ -65,14 +65,14 @@ final class UserRepository extends BaseRepository
     {
         $this->exec(
             'INSERT INTO usuario (nombre, apellido, fecha_alta, estado, email, contraseña, id_rol)
-             VALUES (:nombre,:apellido,:fecha_alta,:estado,:email,:contraseña,:id_rol)',
+             VALUES (:nombre,:apellido,:fecha_alta,:estado,:email,:contrasena,:id_rol)',
             [
                 'nombre' => $data['nombre'],
                 'apellido' => $data['apellido'],
                 'fecha_alta' => $data['fecha_alta'] ?? date('Y-m-d'),
                 'estado' => $data['estado'] ?? 1,
                 'email' => $data['email'],
-                'contraseña' => $data['contraseña'],
+                'contrasena' => $data['contraseña'],
                 'id_rol' => $data['id_rol'],
             ]
         );
@@ -83,11 +83,18 @@ final class UserRepository extends BaseRepository
     {
         $cols = [];
         $params = ['id' => $id];
-        foreach (['nombre','apellido','email','contraseña','id_rol','estado'] as $k) {
+
+        foreach (['nombre','apellido','email','id_rol','estado'] as $k) {
             if (!array_key_exists($k, $data)) continue;
             $cols[] = "$k = :$k";
             $params[$k] = $data[$k];
         }
+
+        if (array_key_exists('contraseña', $data)) {
+            $cols[] = 'contraseña = :contrasena';
+            $params['contrasena'] = $data['contraseña'];
+        }
+
         if (!$cols) return;
         $sql = 'UPDATE usuario SET ' . implode(', ', $cols) . ' WHERE id_usuario = :id';
         $this->exec($sql, $params);
