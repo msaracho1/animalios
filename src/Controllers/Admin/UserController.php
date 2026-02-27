@@ -37,6 +37,13 @@ final class UserController
         ]);
 
         $repo = new UserRepository();
+        $roleRepo = new RoleRepository();
+
+        if (!$roleRepo->existsById((int)$data['id_rol'])) {
+            Session::flash('error', 'El rol seleccionado no existe.');
+            Response::back();
+        }
+
         if ($repo->emailExists($data['email'])) {
             Session::flash('error', 'Ese email ya está registrado.');
             Response::back();
@@ -82,6 +89,12 @@ final class UserController
             'contraseña' => ['nullable','string','min:4','max:255'],
         ]);
 
+        $roleRepo = new RoleRepository();
+        if (!$roleRepo->existsById((int)$data['id_rol'])) {
+            Session::flash('error', 'El rol seleccionado no existe.');
+            Response::back();
+        }
+
         if ($repo->emailExists($data['email'], $userId)) {
             Session::flash('error', 'Ese email ya está en uso.');
             Response::back();
@@ -102,6 +115,11 @@ final class UserController
     {
         $targetId = (int)$id;
         $me = Auth::userOrFail();
+
+        if (($req->post['confirm_delete_user'] ?? null) !== '1') {
+            Session::flash('error', 'Acción inválida para eliminar usuario.');
+            Response::redirect(route('admin.users.index'));
+        }
 
         if ((int)$me->id_usuario === $targetId) {
             Session::flash('error', 'No podés darte de baja a vos mismo.');
