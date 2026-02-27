@@ -14,7 +14,7 @@ ob_start();
       <a class="btn btn--sm" href="<?= htmlspecialchars(route('admin.products.index'), ENT_QUOTES, 'UTF-8') ?>">← Volver</a>
     </div>
 
-    <form method="POST" action="<?= htmlspecialchars(route('admin.products.update', ['id' => $product->id_producto]), ENT_QUOTES, 'UTF-8') ?>" class="form" style="margin:14px 0 0; max-width:780px;">
+    <form method="POST" action="<?= htmlspecialchars(route('admin.products.update', ['id' => $product->id_producto]), ENT_QUOTES, 'UTF-8') ?>" enctype="multipart/form-data" class="form" style="margin:14px 0 0; max-width:780px;">
       <input type="hidden" name="_token" value="<?= htmlspecialchars(\App\Core\Session::csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
 
       <div class="form__row">
@@ -36,6 +36,16 @@ ob_start();
           <label for="stock">Stock</label>
           <input id="stock" type="number" name="stock" value="<?= htmlspecialchars((string)old('stock', (string)$product->stock), ENT_QUOTES, 'UTF-8') ?>" required>
         </div>
+      </div>
+
+
+      <div class="form__row">
+        <label for="imagen">Imagen</label>
+        <input id="imagen" type="file" name="imagen" accept="image/jpeg,image/png,image/webp">
+        <?php if (!empty($product->imagen_url)): ?>
+          <img src="<?= htmlspecialchars(base_path() . (string)$product->imagen_url, ENT_QUOTES, 'UTF-8') ?>" alt="Imagen actual de <?= htmlspecialchars((string)$product->nombre, ENT_QUOTES, 'UTF-8') ?>" style="margin-top:8px; width:180px; max-width:100%; border-radius:10px; border:1px solid #bfb8ae; background:#efede7;">
+        <?php endif; ?>
+        <p class="muted" style="margin:0; font-size:12px;">Si seleccionás una nueva imagen, reemplaza la actual.</p>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">

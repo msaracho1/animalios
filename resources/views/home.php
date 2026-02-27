@@ -43,7 +43,13 @@ ob_start();
     <?php foreach ($featured as $p): ?>
       <div class="product">
         <a href="<?= htmlspecialchars(route('store.show', ['id' => $p->id_producto]), ENT_QUOTES, 'UTF-8') ?>">
-          <div class="product__img"><?= $pawSvg ?></div>
+          <div class="product__img">
+            <?php if (!empty($p->imagen_url)): ?>
+              <img src="<?= htmlspecialchars(base_path() . (string)$p->imagen_url, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$p->nombre, ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+            <?php else: ?>
+              <?= $pawSvg ?>
+            <?php endif; ?>
+          </div>
           <div class="product__name"><?= htmlspecialchars((string)$p->nombre, ENT_QUOTES, 'UTF-8') ?></div>
         </a>
         <div class="product__price">$ <?= number_format((float)$p->precio, 2, ',', '.') ?></div>

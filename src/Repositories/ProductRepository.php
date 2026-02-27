@@ -107,13 +107,15 @@ final class ProductRepository extends BaseRepository
     public function create(array $data): int
     {
         $this->exec(
-            'INSERT INTO producto (nombre, descripcion, precio, stock, id_marca, id_subcategoria)
-             VALUES (:nombre,:descripcion,:precio,:stock,:id_marca,:id_subcategoria)',
+            'INSERT INTO producto (nombre, descripcion, precio, stock, activo, imagen_url, id_marca, id_subcategoria)
+             VALUES (:nombre,:descripcion,:precio,:stock,:activo,:imagen_url,:id_marca,:id_subcategoria)',
             [
                 'nombre'=>$data['nombre'],
                 'descripcion'=>$data['descripcion'] ?? null,
                 'precio'=>$data['precio'],
                 'stock'=>$data['stock'],
+                'activo'=>$data['activo'] ?? 1,
+                'imagen_url'=>$data['imagen_url'] ?? '',
                 'id_marca'=>$data['id_marca'],
                 'id_subcategoria'=>$data['id_subcategoria'],
             ]
@@ -125,7 +127,7 @@ final class ProductRepository extends BaseRepository
     {
         $this->exec(
             'UPDATE producto
-             SET nombre=:nombre, descripcion=:descripcion, precio=:precio, stock=:stock, id_marca=:id_marca, id_subcategoria=:id_subcategoria
+             SET nombre=:nombre, descripcion=:descripcion, precio=:precio, stock=:stock, activo=:activo, imagen_url=:imagen_url, id_marca=:id_marca, id_subcategoria=:id_subcategoria
              WHERE id_producto = :id',
             [
                 'id'=>$id,
@@ -133,6 +135,8 @@ final class ProductRepository extends BaseRepository
                 'descripcion'=>$data['descripcion'] ?? null,
                 'precio'=>$data['precio'],
                 'stock'=>$data['stock'],
+                'activo'=>$data['activo'] ?? 1,
+                'imagen_url'=>$data['imagen_url'] ?? '',
                 'id_marca'=>$data['id_marca'],
                 'id_subcategoria'=>$data['id_subcategoria'],
             ]

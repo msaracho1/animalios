@@ -13,7 +13,7 @@ ob_start();
       <a class="btn btn--sm" href="<?= htmlspecialchars(route('admin.products.index'), ENT_QUOTES, 'UTF-8') ?>">← Volver</a>
     </div>
 
-    <form method="POST" action="<?= htmlspecialchars(route('admin.products.store'), ENT_QUOTES, 'UTF-8') ?>" class="form" style="margin:14px 0 0; max-width:780px;">
+    <form method="POST" action="<?= htmlspecialchars(route('admin.products.store'), ENT_QUOTES, 'UTF-8') ?>" enctype="multipart/form-data" class="form" style="margin:14px 0 0; max-width:780px;">
       <input type="hidden" name="_token" value="<?= htmlspecialchars(\App\Core\Session::csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
 
       <div class="form__row">
@@ -36,6 +36,13 @@ ob_start();
           <label for="stock">Stock</label>
           <input id="stock" type="number" name="stock" value="<?= htmlspecialchars((string)old('stock', '0'), ENT_QUOTES, 'UTF-8') ?>" required>
         </div>
+      </div>
+
+
+      <div class="form__row">
+        <label for="imagen">Imagen</label>
+        <input id="imagen" type="file" name="imagen" accept="image/jpeg,image/png,image/webp">
+        <p class="muted" style="margin:0; font-size:12px;">Formatos permitidos: JPG, PNG o WEBP.</p>
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">

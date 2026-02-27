@@ -16,7 +16,11 @@ ob_start();
   <div class="panel__body">
     <div style="display:grid; grid-template-columns:320px 1fr; gap:18px; align-items:start;">
       <div class="product__img" style="height:260px; background:#efede7; margin:0;">
-        <?= $pawSvg ?>
+        <?php if (!empty($product->imagen_url)): ?>
+          <img src="<?= htmlspecialchars(base_path() . (string)$product->imagen_url, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars((string)$product->nombre, ENT_QUOTES, 'UTF-8') ?>">
+        <?php else: ?>
+          <?= $pawSvg ?>
+        <?php endif; ?>
       </div>
 
       <div>
