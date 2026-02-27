@@ -36,7 +36,7 @@ ob_start();
         <select id="rol" name="id_rol" required>
           <?php foreach ($roles as $r): ?>
             <option value="<?= (int)$r->id_rol ?>" <?= ((int)$r->id_rol === (int)$user->id_rol) ? 'selected' : '' ?>>
-              <?= htmlspecialchars((string)$r->nombre, ENT_QUOTES, 'UTF-8') ?>
+              <?= htmlspecialchars((string)$r->nombre_rol, ENT_QUOTES, 'UTF-8') ?>
             </option>
           <?php endforeach; ?>
         </select>
