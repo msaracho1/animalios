@@ -63,7 +63,7 @@ ob_start();
 <h2 class="section-title">Trabajamos con las mejores marcas</h2>
 <div class="brands">
   <?php foreach (($brands ?? []) as $b): ?>
-    <div class="brandchip"><?= htmlspecialchars((string)$b->nombre, ENT_QUOTES, 'UTF-8') ?></div>
+    <div class="brandchip"><?= htmlspecialchars((string)$b->nombre_marca, ENT_QUOTES, 'UTF-8') ?></div>
   <?php endforeach; ?>
 </div>
 

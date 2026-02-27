@@ -34,7 +34,7 @@ ob_start();
         <label for="rol">Rol</label>
         <select id="rol" name="id_rol" required>
           <?php foreach ($roles as $r): ?>
-            <option value="<?= (int)$r->id_rol ?>"><?= htmlspecialchars((string)$r->nombre, ENT_QUOTES, 'UTF-8') ?></option>
+            <option value="<?= (int)$r->id_rol ?>"><?= htmlspecialchars((string)$r->nombre_rol, ENT_QUOTES, 'UTF-8') ?></option>
           <?php endforeach; ?>
         </select>
       </div>
