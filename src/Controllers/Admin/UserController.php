@@ -29,8 +29,9 @@ final class UserController
     public function store(Request $req): void
     {
         $data = $req->validate([
-            'nombre' => ['required','string','max:255'],
-            'email' => ['required','email','max:255'],
+            'nombre' => ['required','string','max:45'],
+            'apellido' => ['required','string','max:45'],
+            'email' => ['required','email','max:150'],
             'contraseña' => ['required','string','min:4','max:255'],
             'id_rol' => ['required','integer'],
         ]);
@@ -41,7 +42,9 @@ final class UserController
             Response::back();
         }
 
-        $data['contraseña'] = password_hash($data['contraseña'], PASSWORD_BCRYPT);
+        $data['contraseña'] = $repo->hashForStorage($data['contraseña']);
+        $data['fecha_alta'] = date('Y-m-d');
+        $data['estado'] = 1;
         $repo->create($data);
 
         Session::flash('success', 'Usuario creado.');
@@ -72,8 +75,9 @@ final class UserController
         }
 
         $data = $req->validate([
-            'nombre' => ['required','string','max:255'],
-            'email' => ['required','email','max:255'],
+            'nombre' => ['required','string','max:45'],
+            'apellido' => ['required','string','max:45'],
+            'email' => ['required','email','max:150'],
             'id_rol' => ['required','integer'],
             'contraseña' => ['nullable','string','min:4','max:255'],
         ]);
@@ -84,7 +88,7 @@ final class UserController
         }
 
         if (!empty($data['contraseña'])) {
-            $data['contraseña'] = password_hash($data['contraseña'], PASSWORD_BCRYPT);
+            $data['contraseña'] = $repo->hashForStorage($data['contraseña']);
         } else {
             unset($data['contraseña']);
         }

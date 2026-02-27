@@ -34,7 +34,7 @@ final class AuthController
         Auth::login((int)$user->id_usuario);
         $userFull = Auth::user();
 
-        if (($userFull->role->nombre ?? null) === 'admin') {
+        if (in_array(($userFull->role->nombre ?? null), ['admin','administrador'], true)) {
             Response::redirect(route('admin.products.index'));
         }
 
@@ -49,8 +49,9 @@ final class AuthController
     public function register(Request $req): void
     {
         $data = $req->validate([
-            'nombre' => ['required','string','max:255'],
-            'email' => ['required','email','max:255'],
+            'nombre' => ['required','string','max:45'],
+            'apellido' => ['required','string','max:45'],
+            'email' => ['required','email','max:150'],
             'contraseña' => ['required','string','min:4','max:255'],
         ]);
 
@@ -68,9 +69,12 @@ final class AuthController
 
         $id = $users->create([
             'nombre' => $data['nombre'],
+            'apellido' => $data['apellido'],
             'email' => $data['email'],
-            'contraseña' => password_hash($data['contraseña'], PASSWORD_BCRYPT),
+            'contraseña' => $users->hashForStorage($data['contraseña']),
             'id_rol' => (int)$roleCliente->id_rol,
+            'fecha_alta' => date('Y-m-d'),
+            'estado' => 1,
         ]);
 
         Auth::login($id);

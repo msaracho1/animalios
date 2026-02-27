@@ -82,13 +82,19 @@ public static function fromGlobals(): self
 
                 if (str_starts_with($rule, 'min:')) {
                     $n = (int)substr($rule, 4);
-                    if (is_numeric($value) && (float)$value < $n) $errors[$field] = "Mínimo $n";
-                    if (is_string($value) && mb_strlen($value) < $n) $errors[$field] = "Mínimo $n caracteres";
+                    if (is_string($value)) {
+                        if (mb_strlen($value) < $n) $errors[$field] = "Mínimo $n caracteres";
+                    } elseif (is_numeric($value) && (float)$value < $n) {
+                        $errors[$field] = "Mínimo $n";
+                    }
                 }
                 if (str_starts_with($rule, 'max:')) {
                     $n = (int)substr($rule, 4);
-                    if (is_numeric($value) && (float)$value > $n) $errors[$field] = "Máximo $n";
-                    if (is_string($value) && mb_strlen($value) > $n) $errors[$field] = "Máximo $n caracteres";
+                    if (is_string($value)) {
+                        if (mb_strlen($value) > $n) $errors[$field] = "Máximo $n caracteres";
+                    } elseif (is_numeric($value) && (float)$value > $n) {
+                        $errors[$field] = "Máximo $n";
+                    }
                 }
             }
 
