@@ -39,6 +39,7 @@ ob_start();
                   <a class="btn btn--sm btn--ok" href="<?= htmlspecialchars(route('admin.users.edit', ['id' => $u->id_usuario]), ENT_QUOTES, 'UTF-8') ?>">Editar</a>
                   <form method="POST" action="<?= htmlspecialchars(route('admin.users.destroy', ['id' => $u->id_usuario]), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="_token" value="<?= htmlspecialchars(\App\Core\Session::csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+                    <input type="hidden" name="confirm_delete_user" value="1">
                     <button class="btn btn--sm btn--danger" type="submit" onclick="return confirm('¿Dar de baja/eliminar usuario?')">Baja</button>
                   </form>
                 </div>

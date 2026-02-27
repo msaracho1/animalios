@@ -11,6 +11,12 @@ final class RoleRepository extends BaseRepository
         return $row ? $this->obj($row) : null;
     }
 
+
+    public function existsById(int $id): bool
+    {
+        return (bool)$this->fetchOne('SELECT 1 FROM rol WHERE id_rol = :id LIMIT 1', ['id' => $id]);
+    }
+
     public function all(): array
     {
         return $this->objs($this->fetchAll('SELECT * FROM rol ORDER BY nombre_rol'));
