@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use PDO;
+use RuntimeException;
 
 final class UserRepository extends BaseRepository
 {
@@ -63,8 +64,17 @@ final class UserRepository extends BaseRepository
     public function create(array $data): int
     {
         $this->exec(
-            'INSERT INTO usuario (nombre, email, contraseña, id_rol) VALUES (:n,:e,:p,:r)',
-            ['n'=>$data['nombre'], 'e'=>$data['email'], 'p'=>$data['contraseña'], 'r'=>$data['id_rol']]
+            'INSERT INTO usuario (nombre, apellido, fecha_alta, estado, email, contraseña, id_rol)
+             VALUES (:nombre,:apellido,:fecha_alta,:estado,:email,:contraseña,:id_rol)',
+            [
+                'nombre' => $data['nombre'],
+                'apellido' => $data['apellido'],
+                'fecha_alta' => $data['fecha_alta'] ?? date('Y-m-d'),
+                'estado' => $data['estado'] ?? 1,
+                'email' => $data['email'],
+                'contraseña' => $data['contraseña'],
+                'id_rol' => $data['id_rol'],
+            ]
         );
         return $this->lastInsertId();
     }
@@ -73,7 +83,7 @@ final class UserRepository extends BaseRepository
     {
         $cols = [];
         $params = ['id' => $id];
-        foreach (['nombre','email','contraseña','id_rol'] as $k) {
+        foreach (['nombre','apellido','email','contraseña','id_rol','estado'] as $k) {
             if (!array_key_exists($k, $data)) continue;
             $cols[] = "$k = :$k";
             $params[$k] = $data[$k];
@@ -81,6 +91,17 @@ final class UserRepository extends BaseRepository
         if (!$cols) return;
         $sql = 'UPDATE usuario SET ' . implode(', ', $cols) . ' WHERE id_usuario = :id';
         $this->exec($sql, $params);
+    }
+
+
+    public function hashForStorage(string $plainPassword): string
+    {
+        $bcrypt = password_hash($plainPassword, PASSWORD_BCRYPT);
+        if ($bcrypt === false) {
+            throw new RuntimeException('No se pudo generar hash de contraseña.');
+        }
+
+        return $bcrypt;
     }
 
     public function delete(int $id): void

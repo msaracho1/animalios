@@ -21,6 +21,11 @@ ob_start();
       </div>
 
       <div class="form__row">
+        <label for="apellido">Apellido</label>
+        <input id="apellido" name="apellido" value="<?= htmlspecialchars((string)old('apellido'), ENT_QUOTES, 'UTF-8') ?>" required>
+      </div>
+
+      <div class="form__row">
         <label for="email">Email</label>
         <input id="email" name="email" type="email" value="<?= htmlspecialchars((string)old('email'), ENT_QUOTES, 'UTF-8') ?>" required>
       </div>
