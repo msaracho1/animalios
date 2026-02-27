@@ -23,8 +23,8 @@ final class ProfileController
         $user = Auth::userOrFail();
 
         $data = $req->validate([
-            'nombre' => ['required','string','max:255'],
-            'email' => ['required','email','max:255'],
+            'nombre' => ['required','string','max:45'],
+            'email' => ['required','email','max:150'],
         ]);
 
         $repo = new UserRepository();
@@ -45,7 +45,8 @@ final class ProfileController
             'contraseña' => ['required','string','min:4','max:255'],
         ]);
 
-        (new UserRepository())->update((int)$user->id_usuario, ['contraseña' => password_hash($data['contraseña'], PASSWORD_BCRYPT)]);
+        $repo = new UserRepository();
+        $repo->update((int)$user->id_usuario, ['contraseña' => $repo->hashForStorage($data['contraseña'])]);
         Session::flash('success', 'Contraseña actualizada.');
         Response::back();
     }
