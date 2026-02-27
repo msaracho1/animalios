@@ -24,7 +24,7 @@ ob_start();
       </div>
 
       <div style="margin-top:16px;">
-        <a class="btn btn--primary" href="<?= htmlspecialchars(route('store.index'), ENT_QUOTES, 'UTF-8') ?>">COMPRAR</a>
+        <a class="btn btn--primary" href="/animalios/public/tienda">COMPRAR</a>
       </div>
     </div>
 
