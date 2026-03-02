@@ -10,6 +10,7 @@ use App\Core\Session;
 use App\Core\View;
 use App\Repositories\OrderHistoryRepository;
 use App\Repositories\OrderRepository;
+use App\Repositories\OrderStatusRepository;
 
 final class OrderController
 {
@@ -22,7 +23,7 @@ final class OrderController
         ];
 
         $orders = (new OrderRepository())->paginateAdmin($filters, $page, 15);
-        $estadosPosibles = ['Pendiente','En verificación','En preparación','En camino','Recibido','Cancelado'];
+        $estadosPosibles = (new OrderStatusRepository())->all();
         View::render('admin.orders.index', compact('orders','estadosPosibles','filters'));
     }
 
@@ -34,14 +35,14 @@ final class OrderController
             echo 'Pedido no encontrado';
             return;
         }
-        $estadosPosibles = ['Pendiente','En verificación','En preparación','En camino','Recibido','Cancelado'];
+        $estadosPosibles = (new OrderStatusRepository())->all();
         View::render('admin.orders.show', compact('order','estadosPosibles'));
     }
 
     public function updateStatus(Request $req, string $id): void
     {
         $data = $req->validate([
-            'estado' => ['required','string','max:50'],
+            'id_estado_pedido' => ['required','integer'],
         ]);
 
         $order = (new OrderRepository())->find((int)$id);
@@ -51,7 +52,9 @@ final class OrderController
             return;
         }
         $user = Auth::userOrFail();
-        (new OrderHistoryRepository())->create((int)$order->id_pedido,(int)$user->id_usuario, $data['estado'], date('Y-m-d H:i:s'));
+        $statusId = (int)$data['id_estado_pedido'];
+        (new OrderRepository())->updateStatus((int)$order->id_pedido, $statusId);
+        (new OrderHistoryRepository())->create((int)$order->id_pedido,(int)$user->id_usuario, $statusId, date('Y-m-d H:i:s'));
         Session::flash('success', 'Estado actualizado.');
         Response::redirect(route('admin.orders.show', ['id'=>$order->id_pedido]));
     }

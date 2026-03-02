@@ -29,13 +29,12 @@ ob_start();
         </thead>
         <tbody>
           <?php foreach ($data as $o): ?>
-            <?php $last = $o->history[0] ?? null; ?>
             <tr>
               <td><?= (int)$o->id_pedido ?></td>
               <td><?= htmlspecialchars((string)($o->user->nombre ?? '—'), ENT_QUOTES, 'UTF-8') ?></td>
               <td><?= htmlspecialchars((string)$o->fecha_creacion, ENT_QUOTES, 'UTF-8') ?></td>
               <td>$ <?= number_format((float)$o->total, 2, ',', '.') ?></td>
-              <td><?= htmlspecialchars((string)($last->estado ?? '—'), ENT_QUOTES, 'UTF-8') ?></td>
+              <td><?= htmlspecialchars((string)($o->estado_nombre ?? '—'), ENT_QUOTES, 'UTF-8') ?></td>
               <td>
                 <div class="actions">
                   <a class="btn btn--sm" href="<?= htmlspecialchars(route('admin.orders.show', ['id' => $o->id_pedido]), ENT_QUOTES, 'UTF-8') ?>">Ver</a>

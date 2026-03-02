@@ -19,6 +19,7 @@
 <?php
   $user = auth()->user();
   $isAdmin = $user && isset($user->role) && in_array(($user->role->nombre ?? null), ['admin', 'administrador'], true);
+  $isSeller = $user && (($user->role->nombre ?? null) === 'vendedor');
   $cart = \App\Core\Session::get('cart', []);
   $cartCount = 0;
   foreach ($cart as $it) { $cartCount += (int)($it['qty'] ?? 0); }
@@ -42,6 +43,10 @@
 
       <?php if (\App\Core\Auth::check()): ?>
         <a class="nav__link" href="<?= htmlspecialchars(route('orders.index'), ENT_QUOTES, 'UTF-8') ?>">Pedidos</a>
+
+        <?php if ($isSeller): ?>
+          <a class="nav__link" href="<?= htmlspecialchars(route('vendor.orders.index'), ENT_QUOTES, 'UTF-8') ?>">Pedidos Vendedor</a>
+        <?php endif; ?>
 
         <?php if ($isAdmin): ?>
           <a class="nav__link" href="<?= htmlspecialchars(route('admin.users.index'), ENT_QUOTES, 'UTF-8') ?>">Usuarios</a>
