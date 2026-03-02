@@ -7,21 +7,24 @@ use PDO;
 
 final class OrderRepository extends BaseRepository
 {
-public function create(int $userId, string $fecha, float $total): int
-{
-    $this->exec(
-        'INSERT INTO pedido (id_usuario, fecha_creacion, total, id_estado_pedido)
-         VALUES (:u, :f, :t, :e)',
-        [
-            'u' => $userId,
-            'f' => $fecha,
-            't' => $total,
-            'e' => 1, // En Preparación
-        ]
-    );
+    public function create(int $userId, string $fecha, float $total): int
+    {
+        $this->exec(
+            'INSERT INTO pedido (id_usuario, fecha_creacion, total, id_estado_pedido, direccion_envio, metodo_pago, observaciones)
+             VALUES (:u, :f, :t, :e, :d, :m, :o)',
+            [
+                'u' => $userId,
+                'f' => $fecha,
+                't' => $total,
+                'e' => 1,
+                'd' => 'Sin dirección especificada',
+                'm' => 'No definido',
+                'o' => '',
+            ]
+        );
 
-    return $this->lastInsertId();
-}
+        return $this->lastInsertId();
+    }
 
     public function find(int $id): ?object
     {
@@ -68,16 +71,17 @@ public function create(int $userId, string $fecha, float $total): int
 
         // estado: match any history row with that state (simple, like original)
         if (!empty($filters['estado'])) {
-            $where[] = 'EXISTS (SELECT 1 FROM historial_pedido h WHERE h.id_pedido = p.id_pedido AND h.estado = :estado)';
-            $params['estado'] = (string)$filters['estado'];
+            $where[] = 'p.id_estado_pedido = :estado';
+            $params['estado'] = (int)$filters['estado'];
         }
 
         $whereSql = $where ? ('WHERE ' . implode(' AND ', $where)) : '';
         $offset = max(0, ($page-1)*$perPage);
 
-        $sql = "SELECT p.*, u.nombre AS user_nombre, u.email AS user_email
+        $sql = "SELECT p.*, u.nombre AS user_nombre, u.email AS user_email, ep.nombre_estado AS estado_nombre
                 FROM pedido p
                 LEFT JOIN usuario u ON u.id_usuario = p.id_usuario
+                LEFT JOIN estado_pedido ep ON ep.id_estado_pedido = p.id_estado_pedido
                 $whereSql
                 ORDER BY p.fecha_creacion DESC
                 LIMIT :lim OFFSET :off";
@@ -99,6 +103,7 @@ public function create(int $userId, string $fecha, float $total): int
         foreach ($rows as $row) {
             $o = $this->obj($row);
             $o->user = (object)['nombre'=>$row['user_nombre'] ?? null, 'email'=>$row['user_email'] ?? null];
+            $o->estado_nombre = $row['estado_nombre'] ?? null;
             $o->history = $histRepo->listForOrder((int)$o->id_pedido);
             $orders[] = $o;
         }
@@ -108,19 +113,29 @@ public function create(int $userId, string $fecha, float $total): int
 
     public function findAdminFull(int $orderId): ?object
     {
-        $row = $this->fetchOne('SELECT p.*, u.nombre AS user_nombre, u.email AS user_email
+        $row = $this->fetchOne('SELECT p.*, u.nombre AS user_nombre, u.email AS user_email, ep.nombre_estado AS estado_nombre
                                 FROM pedido p
                                 LEFT JOIN usuario u ON u.id_usuario = p.id_usuario
+                                LEFT JOIN estado_pedido ep ON ep.id_estado_pedido = p.id_estado_pedido
                                 WHERE p.id_pedido = :id
                                 LIMIT 1', ['id'=>$orderId]);
         if (!$row) return null;
         $o = $this->obj($row);
         $o->user = (object)['nombre'=>$row['user_nombre'] ?? null, 'email'=>$row['user_email'] ?? null];
+        $o->estado_nombre = $row['estado_nombre'] ?? null;
 
         $itemRepo = new OrderItemRepository();
         $histRepo = new OrderHistoryRepository();
         $o->items = $itemRepo->listForOrder((int)$o->id_pedido);
         $o->history = $histRepo->listForOrder((int)$o->id_pedido);
         return $o;
+    }
+
+    public function updateStatus(int $orderId, int $statusId): void
+    {
+        $this->exec(
+            'UPDATE pedido SET id_estado_pedido = :estado WHERE id_pedido = :id',
+            ['estado' => $statusId, 'id' => $orderId]
+        );
     }
 }

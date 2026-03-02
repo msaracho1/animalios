@@ -86,7 +86,7 @@ $bannerLinks = [
       <?php
         // ⚠️ Ajustá este campo al real de tu DB/modelo si no coincide:
         // ejemplos comunes: imagen, imagen_url, img_url, foto, image_path, etc.
-        $img = $p->imagen ?? $p->img_url ?? $p->img ?? $p->image ?? null;
+        $img = $p->imagen_url ?? $p->imagen ?? $p->img_url ?? $p->img ?? $p->image ?? null;
 
         // Si en tu DB guardás SOLO el nombre de archivo (ej: "sanicat.png"),
         // entonces armalo así:
@@ -94,7 +94,7 @@ $bannerLinks = [
 
         // Si en tu DB guardás la ruta completa (ej: "/animalios/public/uploads/sanicat.png"),
         // dejalo directo:
-        $imgUrl = $img ? (string)$img : null;
+        $imgUrl = $img ? (base_path() . '/' . ltrim((string)$img, '/')) : null;
 
         $name = (string)($p->nombre ?? '');
         $price = (float)($p->precio ?? 0);

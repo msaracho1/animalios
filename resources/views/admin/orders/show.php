@@ -16,7 +16,20 @@ ob_start();
       <div><strong>Cliente:</strong> <?= htmlspecialchars((string)($order->user->nombre ?? '—'), ENT_QUOTES, 'UTF-8') ?></div>
       <div><strong>Fecha:</strong> <?= htmlspecialchars((string)$order->fecha_creacion, ENT_QUOTES, 'UTF-8') ?></div>
       <div><strong>Total:</strong> $ <?= number_format((float)$order->total, 2, ',', '.') ?></div>
+      <div><strong>Estado actual:</strong> <?= htmlspecialchars((string)($order->estado_nombre ?? '—'), ENT_QUOTES, 'UTF-8') ?></div>
     </div>
+
+    <form method="POST" action="<?= htmlspecialchars(route('admin.orders.status', ['id' => $order->id_pedido]), ENT_QUOTES, 'UTF-8') ?>" style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
+      <input type="hidden" name="_token" value="<?= htmlspecialchars(\App\Core\Session::csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
+      <select name="id_estado_pedido" required style="max-width:220px;">
+        <?php foreach ($estadosPosibles as $estado): ?>
+          <option value="<?= (int)$estado->id_estado_pedido ?>" <?= (int)$estado->id_estado_pedido === (int)$order->id_estado_pedido ? 'selected' : '' ?>>
+            <?= htmlspecialchars((string)$estado->nombre_estado, ENT_QUOTES, 'UTF-8') ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+      <button class="btn btn--sm btn--primary" type="submit">Cambiar estado</button>
+    </form>
 
     <h2 class="section-title" style="text-align:left; margin:18px 0 10px">Detalle del pedido</h2>
     <div class="tablewrap">
