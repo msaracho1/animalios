@@ -67,6 +67,7 @@ use App\Controllers\Admin\ProductController as AdminProductController;
 use App\Controllers\Admin\OrderController as AdminOrderController;
 use App\Controllers\Admin\ContactController as AdminContactController;
 use App\Controllers\Vendor\OrderController as VendorOrderController;
+use App\Controllers\Vendor\ContactController as VendorContactController;
 
 // Public
 $router->get('/', [HomeController::class, 'index'])->name('home');
@@ -129,6 +130,10 @@ $router->post('/admin/consultas/{id}/responder', [AdminContactController::class,
 // Seller
 $router->get('/vendedor/pedidos', [VendorOrderController::class, 'index'])->name('vendor.orders.index')->middleware($sellerMw);
 $router->post('/vendedor/pedidos/{id}/estado', [VendorOrderController::class, 'updateStatus'])->name('vendor.orders.status')->middleware($sellerMw);
+$router->get('/vendedor/consultas', [VendorContactController::class, 'index'])->name('vendor.contacts.index')->middleware($sellerMw);
+$router->get('/vendedor/consultas/{id}', [VendorContactController::class, 'show'])->name('vendor.contacts.show')->middleware($sellerMw);
+$router->post('/vendedor/consultas/{id}/estado', [VendorContactController::class, 'updateStatus'])->name('vendor.contacts.status')->middleware($sellerMw);
+$router->post('/vendedor/consultas/{id}/responder', [VendorContactController::class, 'respond'])->name('vendor.contacts.respond')->middleware($sellerMw);
 
 // Dispatch
 $router->dispatch(Request::fromGlobals());

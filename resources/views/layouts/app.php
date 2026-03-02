@@ -46,6 +46,7 @@
 
         <?php if ($isSeller): ?>
           <a class="nav__link" href="<?= htmlspecialchars(route('vendor.orders.index'), ENT_QUOTES, 'UTF-8') ?>">Pedidos Vendedor</a>
+          <a class="nav__link" href="<?= htmlspecialchars(route('vendor.contacts.index'), ENT_QUOTES, 'UTF-8') ?>">Consultas Vendedor</a>
         <?php endif; ?>
 
         <?php if ($isAdmin): ?>
