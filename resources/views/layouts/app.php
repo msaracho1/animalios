@@ -52,6 +52,7 @@
           <a class="nav__link" href="<?= htmlspecialchars(route('admin.users.index'), ENT_QUOTES, 'UTF-8') ?>">Usuarios</a>
           <a class="nav__link" href="<?= htmlspecialchars(route('admin.products.index'), ENT_QUOTES, 'UTF-8') ?>">Productos</a>
           <a class="nav__link" href="<?= htmlspecialchars(route('admin.orders.index'), ENT_QUOTES, 'UTF-8') ?>">Pedidos Admin</a>
+          <a class="nav__link" href="<?= htmlspecialchars(route('admin.contacts.index'), ENT_QUOTES, 'UTF-8') ?>">Consultas</a>
         <?php endif; ?>
       <?php endif; ?>
     </nav>

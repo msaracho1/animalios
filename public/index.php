@@ -65,6 +65,7 @@ use App\Controllers\ContactController;
 use App\Controllers\Admin\UserController as AdminUserController;
 use App\Controllers\Admin\ProductController as AdminProductController;
 use App\Controllers\Admin\OrderController as AdminOrderController;
+use App\Controllers\Admin\ContactController as AdminContactController;
 use App\Controllers\Vendor\OrderController as VendorOrderController;
 
 // Public
@@ -118,6 +119,12 @@ $router->post('/admin/productos/{id}/borrar', [AdminProductController::class, 'd
 $router->get('/admin/pedidos', [AdminOrderController::class, 'index'])->name('admin.orders.index')->middleware($adminMw);
 $router->get('/admin/pedidos/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show')->middleware($adminMw);
 $router->post('/admin/pedidos/{id}/estado', [AdminOrderController::class, 'updateStatus'])->name('admin.orders.status')->middleware($adminMw);
+
+
+$router->get('/admin/consultas', [AdminContactController::class, 'index'])->name('admin.contacts.index')->middleware($adminMw);
+$router->get('/admin/consultas/{id}', [AdminContactController::class, 'show'])->name('admin.contacts.show')->middleware($adminMw);
+$router->post('/admin/consultas/{id}/estado', [AdminContactController::class, 'updateStatus'])->name('admin.contacts.status')->middleware($adminMw);
+$router->post('/admin/consultas/{id}/responder', [AdminContactController::class, 'respond'])->name('admin.contacts.respond')->middleware($adminMw);
 
 // Seller
 $router->get('/vendedor/pedidos', [VendorOrderController::class, 'index'])->name('vendor.orders.index')->middleware($sellerMw);
