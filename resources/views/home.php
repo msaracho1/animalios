@@ -13,8 +13,11 @@ ob_start();
  * (rutas absolutas dentro de /public)
  */
 $banners = [
-  '/animalios/public/assets/images/banner.png',
-  '/animalios/public/assets/images/marcas.png',
+  '/animalios/public/img/BANNER.png',
+  '/animalios/public/img/BANNER2.png',
+  '/animalios/public/img/BANNER3.png',
+  '/animalios/public/img/BANNER4.png',
+  '/animalios/public/img/BANNER5.png',
 ];
 
 $bannerLinks = [
@@ -55,7 +58,7 @@ $bannerLinks = [
     <?php if (count($banners) > 1): ?>
       <button class="carousel-control-prev"
               type="button"
-              data-bs-target="#heroCarousel"
+              data-bs-targept="#heroCarousel"
               data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -140,7 +143,7 @@ $bannerLinks = [
 <h2 class="section-title">Trabajamos con las mejores marcas</h2>
 
 <div style="max-width:1100px; margin:0 auto 24px; padding: 0 16px;">
-  <img src="/animalios/public/assets/images/marcas.png"
+  <img src="/animalios/public/img/Marcass.png"
        alt="Marcas"
        style="width:100%; border-radius:18px;"
        loading="lazy">
