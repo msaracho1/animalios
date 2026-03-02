@@ -228,3 +228,53 @@ table.ui tr:last-child td{border-bottom:none}
 .sidebar{background:var(--panel); border:1px solid #bfb8ae; border-radius:12px; padding:14px; box-shadow:var(--shadow)}
 .sidebar a{display:block; padding:8px 10px; border-radius:10px; font-weight:800; font-size:12px; color:#2c2c2c}
 .sidebar a:hover{background:rgba(255,255,255,.55)}
+
+
+
+/* Card product: estructura en columna y espaciado */
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;              /* separa imagen / nombre / precio / botón */
+}
+
+/* Link ocupa la parte superior */
+.product__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Contenedor de imagen con altura reservada */
+.product__media {
+  width: 100%;
+  height: 150px;          /* ajustá a tu gusto */
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f4f1ea;    /* similar a tu estética */
+  display: grid;
+  place-items: center;
+}
+
+/* Imagen bien contenida, sin invadir el texto */
+.product__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;    /* si preferís que recorte: cover */
+  display: block;
+}
+
+/* Placeholder centrado */
+.product__placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: rgba(0,0,0,.35);
+}
+
+/* Nombre separado, sin “subirse” a la imagen */
+.product__name {
+  margin-top: 6px;
+  line-height: 1.25;
+}
