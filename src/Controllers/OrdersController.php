@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Request;
 use App\Core\View;
+use App\Core\Response;
 use App\Repositories\OrderRepository;
 
 final class OrdersController
@@ -22,13 +23,11 @@ final class OrdersController
         $user = Auth::userOrFail();
         $order = (new OrderRepository())->findWithItemsAndHistory((int)$id);
         if (!$order) {
-            http_response_code(404);
-            echo 'Pedido no encontrado';
+            Response::notFound('El pedido que buscás no existe.');
             return;
         }
         if ((int)$order->id_usuario !== (int)$user->id_usuario) {
-            http_response_code(403);
-            echo '403 - Forbidden';
+            Response::notFound();
             return;
         }
         View::render('orders.show', compact('order'));

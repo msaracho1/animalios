@@ -56,8 +56,7 @@ final class Router
             return;
         }
 
-        http_response_code(404);
-        echo '404 - Not Found';
+        Response::notFound();
     }
 
     private function invoke(mixed $handler, Request $req, array $params): void
