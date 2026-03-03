@@ -29,7 +29,8 @@ $router = new Router();
 // --- Middlewares ---
 $auth = function(Request $req) {
     if (!Auth::check()) {
-        return App\Core\Response::redirect(route('login'));
+        Response::notFound('La URL solicitada no existe o no tenés permisos para acceder.');
+        exit;
     }
     return null;
 };
