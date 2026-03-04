@@ -18,6 +18,7 @@ use App\Core\Router;
 use App\Core\View;
 use App\Core\Auth;
 use App\Core\Request;
+use App\Core\Response;
 
 Env::load(__DIR__ . '/../.env');
 Session::start();
@@ -28,7 +29,8 @@ $router = new Router();
 // --- Middlewares ---
 $auth = function(Request $req) {
     if (!Auth::check()) {
-        return App\Core\Response::redirect(route('login'));
+        Response::notFound('La URL solicitada no existe o no tenés permisos para acceder.');
+        exit;
     }
     return null;
 };
@@ -36,8 +38,7 @@ $auth = function(Request $req) {
 $admin = function(Request $req) {
     $u = Auth::user();
     if (!$u || (($u->role->nombre ?? null) !== 'administrador')) {
-        http_response_code(403);
-        echo '403 - Forbidden';
+        Response::notFound('La URL solicitada no existe o no tenés permisos para acceder.');
         exit;
     }
     return null;
@@ -46,8 +47,7 @@ $admin = function(Request $req) {
 $seller = function(Request $req) {
     $u = Auth::user();
     if (!$u || (($u->role->nombre ?? null) !== 'vendedor')) {
-        http_response_code(403);
-        echo '403 - Forbidden';
+        Response::notFound('La URL solicitada no existe o no tenés permisos para acceder.');
         exit;
     }
     return null;
